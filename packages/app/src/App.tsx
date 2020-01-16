@@ -40,22 +40,18 @@ export const App: React.FC = () => {
   const [playing, setPlaying] = useState({} as ISongPlaying);
 
   useEffect(() => {
-    Promise.all(
-      Array.from({ length: 10 }).map(() => {
-        return fetch("http://localhost:8000/random/thumbnail")
-          .then(res => res.json())
-          .then(cover => {
-            return {
-              id: count++,
-              artist: "Nas",
-              name: "NY State of Mind",
-              album: "illmatic",
-              duration: Math.floor(Math.random() * 300) + 200,
-              cover: cover.url
-            };
-          });
-      })
-    )
+    fetch("http://localhost:8000/random/thumbnail")
+      .then(res => res.json())
+      .then(cover =>
+        Array.from({ length: 20 }).map(() => ({
+          id: count++,
+          artist: "Nas",
+          name: "NY State of Mind",
+          album: "illmatic",
+          duration: Math.floor(Math.random() * 300) + 200,
+          cover: cover.url
+        }))
+      )
       .then(songs => setSongs(songs))
       .finally(() => setLoading(false));
   }, []);
@@ -102,7 +98,7 @@ export const App: React.FC = () => {
       </Container>
       <Shadow />
       <Player active={!!playing.artist}>
-        <Thumb src={playing.cover} flex="1 0 150px;"></Thumb>
+        <Thumb src={playing.cover} flex="1 0 200px;"></Thumb>
         <NowPlaying>Now playing {playing.artist}</NowPlaying>
         <Progress>
           <ProgressBar value={playing.current} max={playing.duration} />
