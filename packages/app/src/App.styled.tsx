@@ -31,10 +31,9 @@ export const Shadow = styled.div`
   background: linear-gradient(to bottom, transparent 0%, #000 100%);
 `;
 
-export const Thumb = styled.div<{ src: string; flex?: string }>`
-  flex: ${props => (props.flex ? props.flex : "none")};
-  width: 200px;
-  height: 200px;
+export const Thumb = styled.div<{size?: number; src: string}>`
+  width: ${props => props.size ? props.size + 'px' : '200px'};
+  height: ${props => props.size ? props.size + 'px' : '200px'};
   background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
@@ -59,19 +58,33 @@ export const Player = styled.div<{ active: boolean }>`
   transition: transform 200ms ease-in-out;
   transform: ${props => (props.active ? "none" : "translateY(100%)")};
   display: flex;
-  align-items: center;
+  align-items: stretch;
 `;
 
 export const Duration = styled.p`
   font-family: monospace;
 `;
 
-export const NowPlaying = styled.div`
-  padding: 0 40px;
-  font-size: 22px;
-  font-weight: 200;
+export const Controls = styled.div`
+  box-sizing: content-box;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-left: 1px solid #222;
+  border-right: 1px solid #222;
+  margin-right: -1px; /* TODO - remove */
 `;
+
+export const Button = styled.button`
+  background: none;
+  border: none;
+  color: #fff;
+
+  &:focus {
+    outline: none;
+  }
+`
 
 export const Progress = styled.div`
   appearance: none;
