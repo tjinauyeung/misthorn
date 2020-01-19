@@ -1,90 +1,149 @@
-/** @jsx jsx */
-
-import { useEffect, useState, Fragment } from "react";
-import { jsx } from "@emotion/core";
+import React, { useEffect, useRef, useState, Fragment } from "react";
 import {
   Loader,
-  Aside,
-  Show,
   Container,
   Title,
   List,
-  Song,
-  Thumb,
-  Duration,
-  Body,
   Shadow,
-  Player,
-  Controls,
-  Progress,
-  ProgressBar,
-  Button
+  Background
 } from "./App.styled";
-import { Waveform } from "./components/Waveform";
-import { Pause } from "./icons/Pause";
-import { Play } from "./icons/Play";
+import Song from "./components/Song";
+import { ISong } from "./declarations";
+import Player from "./components/Player";
 
-interface ISong {
-  id: number;
-  artist: string;
-  name: string;
-  album: string;
-  duration: number;
-  cover: string;
-  src: string;
-}
-
-interface ISongPlaying extends ISong {
-  current: number;
-}
-
-let count = 1;
-
-function makeSongs(cover) {
-  return Array.from({ length: 20 }).map(() => ({
-    id: count++,
-    artist: "Nas",
-    name: "NY State of Mind",
-    album: "illmatic",
-    duration: Math.floor(Math.random() * 300) + 200,
-    cover: cover.url,
-    src:
-      "http://ia902606.us.archive.org/35/items/shortpoetry_047_librivox/song_cjrg_teasdale_64kb.mp3"
-  }));
+function makeSongs() {
+  return [
+    {
+      id: 1,
+      artist: "Nicolas Jaar",
+      name: "Time for us",
+      album: "Time for us",
+      duration: "07:38",
+      cover: "/static/nicolas-jaar-time-for-us.jpg",
+      src: "/static/nicolas-jaar-time-for-us.mp3"
+    },
+    {
+      id: 2,
+      artist: "First Aid Kit",
+      name: "Winter is all over you",
+      album: "Winter is all over you",
+      duration: "02:33",
+      cover: "/static/first-aid-kit-winter-is-all-over-you-baauer-remix.jpg",
+      src: "/static/first-aid-kit-winter-is-all-over-you-baauer-remix.mp3"
+    },
+    {
+      id: 3,
+      artist: "Chet Faker",
+      name: "Talk is cheap",
+      album: "Built on glass",
+      duration: "03:39",
+      cover: "/static/chet-faker-talk-is-cheap.jpg",
+      src: "/static/chet-faker-talk-is-cheap.mp3"
+    },
+    {
+      id: 4,
+      artist: "Darkside",
+      name: "Paper trails",
+      album: "Psychic",
+      duration: "04:50",
+      cover: "/static/darkside-paper-trails.jpg",
+      src: "/static/darkside-paper-trails.mp3"
+    },
+    {
+      id: 5,
+      artist: "Nicolas Jaar",
+      name: "With just one glance",
+      album: "Space is only noise",
+      duration: "03:50",
+      cover: "/static/nicolas-jaar-with-just-one-glance.jpg",
+      src: "/static/nicolas-jaar-with-just-one-glance.mp3"
+    },
+    {
+      id: 6,
+      artist: "Weval",
+      name: "Gimme some",
+      album: "Easier",
+      duration: "05:08",
+      cover: "/static/weval-gimme-some.jpg",
+      src: "/static/weval-gimme-some.mp3"
+    }
+  ];
 }
 
 export const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [showAside, setShowAside] = useState(false);
-  const [on, setOn] = useState(false);
+  const [opacity, setOpacity] = useState(1);
   const [songs, setSongs] = useState([] as ISong[]);
-  const [activeSong, setActiveSong] = useState({} as ISongPlaying);
+  const [seconds, setSeconds] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [activeSong, setActiveSong] = useState({} as ISong);
 
   useEffect(() => {
-    fetch("http://localhost:8000/random/thumbnail")
-      .then(res => res.json())
-      .then(cover => makeSongs(cover))
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    Promise.resolve()
+      .then(() => makeSongs())
       .then(songs => setSongs(songs))
-      .catch(e => {
-        const cover = {
-          url: ""
-        };
-        setSongs(makeSongs(cover));
-      })
       .finally(() => setLoading(false));
   }, []);
 
-  function playSong(song: ISong) {
-    setOn(true);
-    setActiveSong({
-      ...song,
-      current: Math.floor(Math.random() * 200)
+  const handleScroll = () => {
+    window.requestAnimationFrame(() => {
+      const y = window.scrollY;
+      const opacity = (100 - (y / 150) * 100) * 0.01;
+      setOpacity(opacity);
     });
-  }
+  };
 
-  function toggleMusic() {
-    setOn(isOn => !isOn);
-  }
+  const toggleSong = (song: ISong) => e => {
+    if (activeSong.id === song.id) {
+      if (isPlaying) {
+        setIsPlaying(false);
+      } else {
+        setIsPlaying(true);
+      }
+    } else {
+      setActiveSong(song);
+      setIsPlaying(true);
+      setSeconds(0);
+    }
+  };
+
+  const tick = secs => {
+    setSeconds(secs);
+  };
+
+  const play = () => {
+    setActiveSong(activeSong);
+    setIsPlaying(true);
+  };
+
+  const pause = () => {
+    setIsPlaying(false);
+  };
+
+  const next = () => {
+    const idx = songs.findIndex(song => song.id === activeSong.id);
+    const nextSong = songs[idx + 1];
+    if (nextSong) {
+      setActiveSong(nextSong);
+      setIsPlaying(true);
+      setSeconds(0);
+    }
+  };
+
+  const prev = () => {
+    const idx = songs.findIndex(song => song.id === activeSong.id);
+    const prevSong = songs[idx - 1];
+    if (prevSong) {
+      setActiveSong(prevSong);
+      setIsPlaying(true);
+      setSeconds(0);
+    }
+  };
 
   if (loading) {
     return <Loader>loading...</Loader>;
@@ -92,42 +151,38 @@ export const App: React.FC = () => {
 
   return (
     <Fragment>
-      <Aside expand={showAside}>
-        credits here
-        <Show onClick={e => setShowAside(show => !show)}>
-          {showAside ? "hide" : "show"}
-        </Show>
-      </Aside>
       <Container>
-        <Title>Misthoorn</Title>
+        <Title opacity={opacity}>
+          Misthørn
+        </Title>
         <List>
           {songs.length > 0 &&
             songs.map((song: ISong) => (
-              <Fragment key={song.id}>
-                <Song onClick={e => playSong(song)}>
-                  <Thumb src={song.cover}></Thumb>
-                  <Body>
-                    <h2>{song.artist}</h2>
-                    <h1>{song.name}</h1>
-                    <Duration>{song.duration}</Duration>
-                  </Body>
-                </Song>
-                <hr />
-              </Fragment>
+              <Song
+                key={song.id}
+                onClick={toggleSong(song)}
+                isActive={song.id === activeSong.id}
+                isPlaying={song.id === activeSong.id && isPlaying}
+                seconds={seconds}
+                song={song}
+              />
             ))}
         </List>
       </Container>
+      <Background image={activeSong.cover} />
       <Shadow />
-      <Player active={!!activeSong.src}>
-        <Thumb size={100} src={activeSong.cover}></Thumb>
-        <Controls>
-          <Button onClick={toggleMusic}>{on ? <Pause /> : <Play />}</Button>
-        </Controls>
-        <div style={{ flex: 1 }}>
-          <Waveform playing={on} src={activeSong.src} />
-        </div>
-      </Player>
-      )}
+      <Player
+        active={!!activeSong.src}
+        isPlaying={isPlaying}
+        onTick={tick}
+        onPlay={play}
+        onPause={pause}
+        onPrev={prev}
+        onNext={next}
+        activeSong={activeSong}
+      />
     </Fragment>
   );
 };
+
+export default App;

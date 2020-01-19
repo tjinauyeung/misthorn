@@ -1,13 +1,15 @@
-import React, { Fragment } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import { App } from "./App";
-import { Global } from "@emotion/core";
-import global from "./global.styles";
+import App from "./App";
+
+import { ThemeProvider } from "styled-components";
+import Global from "./styles";
+import { baseTheme } from "./hoc/withTheme";
 
 ReactDOM.render(
-  <Fragment>
-    <Global styles={global} />
+  <ThemeProvider theme={baseTheme}>
+    <Global />
     <App />
-  </Fragment>,
+  </ThemeProvider>,
   document.getElementById("root")
 );
