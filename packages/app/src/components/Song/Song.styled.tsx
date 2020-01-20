@@ -19,6 +19,7 @@ export const Card = styled.div<{ active: boolean }>`
   font-family: ${props => props.theme.typography.fontFamily};
   color: ${props => props.theme.colors.text};
   padding: 30px 0;
+  max-width: 400px;
   display: flex;
   align-items: center;
   cursor: pointer;

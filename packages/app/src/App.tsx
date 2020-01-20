@@ -152,9 +152,7 @@ export const App: React.FC = () => {
   return (
     <Fragment>
       <Container>
-        <Title opacity={opacity}>
-          Misthørn
-        </Title>
+        <Title opacity={opacity}>Misthørn</Title>
         <List>
           {songs.length > 0 &&
             songs.map((song: ISong) => (

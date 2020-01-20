@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 export default createGlobalStyle`
   :root {
     --primary: #1dff82;
-    --grey: #222;
+    --grey: #666;
   }
 
   *,
@@ -16,5 +16,9 @@ export default createGlobalStyle`
     background: #000;
     color: #fff;
     font-family: sans-serif;
+  }
+
+  body {
+    margin: 0;
   }
 `;

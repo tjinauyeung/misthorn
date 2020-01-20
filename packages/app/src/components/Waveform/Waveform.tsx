@@ -2,21 +2,7 @@ import React, { useEffect, useRef, FC, useState, Fragment } from "react";
 import WaveSurfer from "wavesurfer.js";
 import Cursor from "wavesurfer.js/dist/plugin/wavesurfer.cursor";
 import { ISong } from "../../declarations";
-import styled from "styled-components";
-
-const Loader = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: monospace;
-  font-size: 10px;
-  color: #fff;
-`;
+import Loader from "../Loader";
 
 let ws: WaveSurfer = {} as WaveSurfer;
 
@@ -25,23 +11,32 @@ const Waveform: FC<{
   song: ISong;
   onFinish: () => void;
   onTick: (seconds: number) => void;
-}> = ({ playing = false, song = {}, onTick, onFinish }) => {
+  volume: number;
+  muted: boolean;
+}> = ({
+  playing = false,
+  song = {},
+  onTick,
+  onFinish,
+  volume = 0.5,
+  muted = false
+}) => {
   const ref = useRef(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     ws.destroy && ws.destroy();
     ws = WaveSurfer.create({
       container: ref.current!,
-      waveColor: "#222",
+      waveColor: "#666",
       progressColor: "#fff",
-      cursorColor: "#222",
-      cursorWidth: 0,
+      cursorColor: "#fff",
+      cursorWidth: 1,
       barWidth: 1,
       barRadius: 1,
-      barGap: 1,
-      height: 30,
+      barGap: 2,
+      height: 15,
       plugins: [
         Cursor.create({
           showTime: true,
@@ -68,14 +63,35 @@ const Waveform: FC<{
       } else {
         ws.pause && ws.pause();
       }
+      if (volume) {
+        ws.setVolume(volume);
+      }
+      if (muted !== undefined) {
+        ws.setMute(muted);
+      }
     }
-  }, [ws, loading, playing]);
+  }, [ws, loading, playing, volume, muted]);
 
   return (
     <Fragment>
-      {loading && <Loader>loading...</Loader>}
+      {loading && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Loader size={5} />
+        </div>
+      )}
       <div
-        style={{ position: "relative", flex: 1, maxWidth: 900, margin: "auto" }}
+        style={{ position: "relative", flex: 1, maxWidth: 768, margin: "auto" }}
         ref={ref}
       ></div>
     </Fragment>

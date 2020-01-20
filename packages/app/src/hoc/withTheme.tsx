@@ -4,7 +4,7 @@ import { ThemeProvider } from "emotion-theming";
 export const baseTheme = {
   colors: {
     primary: "#1dff82",
-    border: '#222',
+    border: '#666',
     text: "#ccc",
     textDark: "#777"
   },

@@ -5,7 +5,7 @@ export const Title = styled.h1<{ opacity: number }>`
   font-weight: 100;
   text-transform: uppercase;
   letter-spacing: 30px;
-  margin-top: 80px;
+  margin-top: 70px;
   text-align: center;
   margin-bottom: 50px;
   position: fixed;
@@ -17,7 +17,8 @@ export const Title = styled.h1<{ opacity: number }>`
 `;
 
 export const Container = styled.div`
-  max-width: 768px;
+  max-width: 900px;
+  padding: 20px;
   margin: auto;
 `;
 
@@ -26,14 +27,14 @@ export const Shadow = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 30vh;
+  height: 40vh;
   pointer-events: none;
   background: linear-gradient(to bottom, transparent 0%, #000 100%);
 `;
 
 export const List = styled.div`
-  margin-top: 150px;
-  margin-bottom: 150px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 `;
 
 export const Loader = styled.div`
@@ -52,7 +53,7 @@ export const Background = styled.div<{ image: string }>`
   bottom: 0;
   margin: 150px;
   z-index: -1;
-  opacity: 0.6;
+  opacity: 0.8;
   background-size: contain;
   background-position: right;
   background-repeat: no-repeat;
