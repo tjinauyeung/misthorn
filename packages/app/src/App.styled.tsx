@@ -1,25 +1,39 @@
 import styled from "styled-components";
 
-export const Title = styled.h1<{ opacity: number }>`
-  font-size: 18px;
+type TitleProps = { transparency: number; blur: number };
+export const Title = styled.h1.attrs((props: TitleProps) => ({
+  style: {
+    filter: `blur(${props.blur}px)`,
+    opacity: props.transparency
+  }
+}))`
+  font-size: 20px;
   font-weight: 100;
   text-transform: uppercase;
-  letter-spacing: 30px;
+  letter-spacing: 32px;
   margin-top: 70px;
   text-align: center;
-  margin-bottom: 50px;
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   right: 0;
-  opacity: ${props => props.opacity};
+
+  @media screen and (max-width: 425px) {
+    margin-top: 60px;
+    font-size: 14px;
+    letter-spacing: 20px;
+  }
 `;
 
 export const Container = styled.div`
-  max-width: 900px;
-  padding: 20px;
+  max-width: 1024px;
+  padding: 0 20px;
   margin: auto;
+
+  @media screen and (min-width: 768px) {
+    padding: 0 60px;
+  }
 `;
 
 export const Shadow = styled.div`
@@ -33,7 +47,7 @@ export const Shadow = styled.div`
 `;
 
 export const List = styled.div`
-  margin-top: 100px;
+  margin-top: 120px;
   margin-bottom: 100px;
 `;
 
@@ -59,4 +73,8 @@ export const Background = styled.div<{ image: string }>`
   background-repeat: no-repeat;
   background-image: ${props => (props.image ? `url(${props.image})` : "none")};
   transition: background-image 800ms ease;
+
+  @media screen and (max-width: 425px) {
+    display: none;
+  }
 `;

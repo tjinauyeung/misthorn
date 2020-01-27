@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Bar,
   Wrapper,
@@ -15,6 +15,8 @@ import Waveform from "../Waveform";
 import Volume from "../Volume";
 import ChevronDown from "../../icons/ChevronDown";
 
+const mql = window.matchMedia("(max-width: 425px)");
+
 const Player = ({
   active,
   onPlay,
@@ -29,8 +31,22 @@ const Player = ({
   const [volume, setVolume] = useState(0.5);
   const [muted, setMuted] = useState(false);
 
+  useEffect(() => {
+    mql.addListener(handleMedia);
+    return () => mql.removeListener(handleMedia);
+  }, []);
+
+  function handleMedia() {
+    if (mql.matches) {
+      setCollapsed(false);
+    } else {
+      setCollapsed(true);
+    }
+  }
+
   function toggleCollapse(e) {
     setCollapsed(!collapsed);
+    dispatchEvent(new Event("resize"));
   }
 
   function adjustVolume(volume) {
@@ -44,9 +60,6 @@ const Player = ({
   return (
     <Bar active={active}>
       <Wrapper collapsed={collapsed}>
-        <Minimize collapsed={collapsed} onClick={toggleCollapse}>
-          <ChevronDown />
-        </Minimize>
         <WaveformWrapper collapsed={collapsed}>
           {activeSong.src && (
             <Waveform

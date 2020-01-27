@@ -73,6 +73,7 @@ function makeSongs() {
 export const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [opacity, setOpacity] = useState(1);
+  const [blur, setBlur] = useState(0);
   const [songs, setSongs] = useState([] as ISong[]);
   const [seconds, setSeconds] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -95,6 +96,7 @@ export const App: React.FC = () => {
       const y = window.scrollY;
       const opacity = (100 - (y / 150) * 100) * 0.01;
       setOpacity(opacity);
+      setBlur(Math.round(y / 10));
     });
   };
 
@@ -152,7 +154,9 @@ export const App: React.FC = () => {
   return (
     <Fragment>
       <Container>
-        <Title opacity={opacity}>Misthørn</Title>
+        <Title transparency={opacity} blur={blur}>
+          Misthørn
+        </Title>
         <List>
           {songs.length > 0 &&
             songs.map((song: ISong) => (

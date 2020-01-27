@@ -27,7 +27,8 @@ export const Wrapper = styled.div<{ collapsed: boolean }>`
 `;
 
 export const Controls = styled.div`
-  width: 280px;
+  width: 100%;
+  max-width: 280px;
   flex: 1 0 50px;
   margin: auto;
   height: 70px;
@@ -82,9 +83,10 @@ export const Minimize = styled.button<{ collapsed: boolean }>`
 
 export const WaveformWrapper = styled.div<{ collapsed: boolean }>`
   height: 50px;
-  /* max-height: ${props => (props.collapsed ? "100px" : "100px")}; */
-  width: 320px;
+  max-width: 320px;
+  width: 100%;
   flex: 1 0 50px;
+  color: transparent;
   margin: auto;
   transition: max-height 200ms ease;
   overflow: hidden;

@@ -32,17 +32,29 @@ export const Card = styled.div<{ active: boolean }>`
   &:hover ${Controls} {
     opacity: 1;
   }
+
+  @media screen and (max-width: 425px) {
+    padding: 15px 5px;
+  }
 `;
 
 export const NowPlaying = styled.p`
   font-size: 14px;
   color: ${props => props.theme.colors.primary};
+
+  @media screen and (max-width: 425px) {
+    font-size: 12px;
+  }
 `;
 
 export const Artist = styled.h1`
   font-size: 14px;
   color: ${props => props.theme.colors.textDark};
   font-weight: 400;
+
+  @media screen and (max-width: 425px) {
+    font-size: 12px;
+  }
 `;
 
 export const Name = styled.h2`
@@ -50,6 +62,10 @@ export const Name = styled.h2`
   font-size: 22px;
   letter-spacing: 1px;
   margin: 0;
+
+  @media screen and (max-width: 425px) {
+    font-size: 18px;
+  }
 `;
 
 export const ThumbWrapper = styled.div`
@@ -62,15 +78,28 @@ export const Thumb = styled.div<{ size?: number; src: string }>`
   background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
+
+  @media screen and (max-width: 425px) {
+    width: 120px;
+    height: 120px;
+  }
 `;
 
 export const Body = styled.div`
   padding-left: 30px;
+
+  @media screen and (max-width: 425px) {
+    padding-left: 25px;
+  }
 `;
 
 export const Duration = styled.p`
   font-family: monospace;
   color: ${props => props.theme.colors.textDark};
+
+  @media screen and (max-width: 425px) {
+    margin: 8px 0;
+  }
 `;
 
 export const TimePlaying = styled.span`

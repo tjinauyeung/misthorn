@@ -36,6 +36,7 @@ const Waveform: FC<{
       barWidth: 1,
       barRadius: 1,
       barGap: 2,
+      responsive: true,
       height: 15,
       plugins: [
         Cursor.create({
