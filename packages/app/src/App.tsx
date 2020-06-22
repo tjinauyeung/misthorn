@@ -66,6 +66,15 @@ function makeSongs() {
       duration: "05:08",
       cover: "/static/weval-gimme-some.jpg",
       src: "/static/weval-gimme-some.mp3"
+    },
+    {
+      id: 7,
+      artist: "Tale of us & Vaal",
+      name: "Hangar",
+      album: "",
+      duration: "06:12",
+      cover: "/static/tale-of-us-vaal-hangar.jpg",
+      src: "/static/tale-of-us-vaal-hangar.mp3",
     }
   ];
 }

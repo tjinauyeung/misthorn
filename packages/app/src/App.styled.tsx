@@ -6,7 +6,7 @@ export const Title = styled.h1.attrs((props: TitleProps) => ({
     filter: `blur(${props.blur}px)`,
     opacity: props.transparency
   }
-}))`
+}))<TitleProps>`
   font-size: 20px;
   font-weight: 100;
   text-transform: uppercase;
